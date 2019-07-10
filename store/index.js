@@ -12,7 +12,7 @@ export const state = () => ({
 export const getters = {
   isValidWord: state => word => state.words.includes(word),
   players: state => state.players,
-  letterValue: state => ({ letter, mult }) => state.letters[letter] * mult,
+  letterValue: state => letter => state.letters[letter],
   highestScore: state => state.players,
   longestWord: state => state.players
 };
