@@ -5,7 +5,7 @@
     </h1>
     <b-form @submit.prevent="checkWord">
       <b-input-group class="col offset-sm-2 col-sm-8 my-4">
-        <b-input autocomplete="false" :state="isValid" v-model="newWord" />
+        <b-input autocomplete="false" :state="isValid" @input="e=>newWord=e" :value="newWord" />
         <b-input-group-append>
           <b-button type="submit" :disabled="!isValid" variant="primary">{{submitBtnText}}</b-button>
         </b-input-group-append>
