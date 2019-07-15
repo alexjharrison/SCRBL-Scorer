@@ -26,7 +26,7 @@ export default {
       return mult === 0
         ? ""
         : mult === 1
-        ? "outline-dark"
+        ? "outline-light"
         : mult === 2
         ? "info"
         : "success";

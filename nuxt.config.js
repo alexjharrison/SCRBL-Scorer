@@ -33,7 +33,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/v-model-mobile'],
+  plugins: [],
 
   /*
    ** Nuxt.js modules

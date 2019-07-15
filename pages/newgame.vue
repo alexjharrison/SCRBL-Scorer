@@ -1,10 +1,12 @@
 <template>
   <div id="new-game" class="d-flex flex-column justify-content-center align-items-center">
-    <h1>SCRIBLR</h1>
+    <h1>
+      <em>SCRIBLR</em>
+    </h1>
     <h2>
       <u>Players</u>
     </h2>
-    <div>
+    <div class="d-flex justify-content-between">
       <div class="players" v-for="(player,name) in players" :key="name">
         {{name}}
         <b-button @click="removePlayer(name)" size="sm" variant="danger">X</b-button>
