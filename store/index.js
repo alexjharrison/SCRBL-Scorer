@@ -18,7 +18,12 @@ export const getters = {
   playerScore: state => name =>
     state.players[name].reduce((acc, { score }) => acc + score, 0),
   wordScore: (state, getters) => word =>
-    word.split('').reduce((acc, letter) => acc + getters.letterValue(letter), 0)
+    state.words[word] ||
+    word
+      .split('')
+      .reduce((acc, letter) => acc + getters.letterValue(letter), 0),
+  validateCombos: state => word =>
+    this.generateAllWords(word).filter(word => state.words[word])
 };
 
 export const mutations = {

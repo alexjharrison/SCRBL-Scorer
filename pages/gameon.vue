@@ -8,6 +8,8 @@
         <b-input :state="isValid" v-model="newWord" />
         <b-input-group-append>
           <b-button type="submit" variant="primary">{{submitBtnText}}</b-button>
+          <b-button variant="warning">Define</b-button>
+          <b-button @click="updateValidWords" v-b-modal.words-modal variant="info">All Valid Words</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form>
@@ -35,6 +37,12 @@
         @click="saveWords(name)"
       >Save for {{name.toUpperCase()}}</b-button>
     </div>
+    <b-modal id="words-modal">
+      {{allValidWords}}
+      <div v-for="(word,score) in allValidWords" :key="word">
+        <p>{{score}}: {{word}}</p>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -49,11 +57,18 @@ export default {
     return {
       newWord: "",
       isValid: null,
-      words: []
+      words: [],
+      allValidWords: {}
     };
   },
   computed: {
-    ...mapGetters(["players", "isValidWord", "playerScore", "wordScore"]),
+    ...mapGetters([
+      "players",
+      "isValidWord",
+      "playerScore",
+      "wordScore",
+      "validateCombos"
+    ]),
     playTotal() {
       return this.words.reduce((acc, { score }) => acc + score, 0);
     },
@@ -63,6 +78,17 @@ export default {
         : this.isValid
         ? this.wordScore(this.newWord) + " Points"
         : "Not a Word";
+    },
+    definition() {
+      // return "Definition: " + this.definitionOf(this.newWord);
+      return "Definition: ";
+    },
+    validWordsTableData() {
+      const words = this.allValidWords.map(word => ({
+        word,
+        score: this.wordScore(word)
+      }));
+      console.log(words);
     }
   },
   watch: {
@@ -74,12 +100,26 @@ export default {
   methods: {
     ...mapMutations(["addWords"]),
     checkWord() {
+      if (this.newWord === "") return;
       this.words.push({ word: this.newWord, score: null });
       this.newWord = "";
     },
     saveWords(name) {
       this.addWords({ name, words: this.words });
       this.words = [];
+    },
+    updateValidWords() {
+      const allWords = this.generateAllWords(this.newWord)
+        .filter(this.isValidWord)
+        .reduce((blob, word) => {
+          const score = this.wordScore(word);
+          blob[score] = blob[score] ? [...blob[score], word] : [word];
+          return blob;
+        }, {});
+
+      console.log(allWords);
+      // this.allValidWords = this.validateCombos(this.newWord);
+      // console.log(this.allValidWords);
     }
   }
 };

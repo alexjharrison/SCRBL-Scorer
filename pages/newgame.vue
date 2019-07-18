@@ -35,9 +35,7 @@ export default {
   },
   methods: {
     ...mapMutations(["addPlayer", "removePlayer"]),
-    add(e) {
-      console.log(e.target);
-    }
+    add(e) {}
   }
 };
 </script>
