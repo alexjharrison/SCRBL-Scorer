@@ -8,8 +8,12 @@
         <b-input :state="isValid" v-model="newWord" />
         <b-input-group-append>
           <b-button type="submit" variant="primary">{{submitBtnText}}</b-button>
+        </b-input-group-append>
+      </b-input-group>
+      <b-input-group>
+        <b-input-group-append>
           <b-button variant="warning">Define</b-button>
-          <b-button @click="updateValidWords" v-b-modal.words-modal variant="info">All Valid Words</b-button>
+          <b-button @click="allValidWordsModalVisible = true" variant="info">All Valid Words</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form>
@@ -37,11 +41,8 @@
         @click="saveWords(name)"
       >Save for {{name.toUpperCase()}}</b-button>
     </div>
-    <b-modal id="words-modal">
-      {{allValidWords}}
-      <div v-for="(word,score) in allValidWords" :key="word">
-        <p>{{score}}: {{word}}</p>
-      </div>
+    <b-modal ok-only size="xl" id="modal" title="Visible Words" v-model="allValidWordsModalVisible">
+      <all-valid-words-modal :word="newWord" />
     </b-modal>
   </div>
 </template>
@@ -49,16 +50,18 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import Word from "@/components/Word";
+import AllValidWordsModal from "@/components/AllValidWordsModal";
 export default {
   components: {
-    Word
+    Word,
+    AllValidWordsModal
   },
   data() {
     return {
       newWord: "",
       isValid: null,
       words: [],
-      allValidWords: {}
+      allValidWordsModalVisible: false
     };
   },
   computed: {
@@ -109,14 +112,6 @@ export default {
       this.words = [];
     },
     updateValidWords() {
-      const allWords = this.generateAllWords(this.newWord)
-        .filter(this.isValidWord)
-        .reduce((blob, word) => {
-          const score = this.wordScore(word);
-          blob[score] = blob[score] ? [...blob[score], word] : [word];
-          return blob;
-        }, {});
-
       console.log(allWords);
       // this.allValidWords = this.validateCombos(this.newWord);
       // console.log(this.allValidWords);
@@ -126,4 +121,7 @@ export default {
 </script>
 
 <style>
+#modal {
+  color: black;
+}
 </style>
