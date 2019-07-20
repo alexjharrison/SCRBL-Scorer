@@ -42,8 +42,26 @@ module.exports = {
     // Doc: https://bootstrap-vue.js.org/docs/
     "bootstrap-vue/nuxt",
     "@nuxtjs/dotenv",
+    "@nuxtjs/proxy",
     "@nuxtjs/axios"
   ],
+
+  /*
+   ** Axios config
+   */
+  axios: {
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? "https://scriblr.netlify.com/.netlify/functions/getTranslation"
+        : "http://localhost:" + (process.env.PORT || 2999) + "/getTranslation"
+  },
+
+  /*
+   ** Proxy config
+   */
+  proxy: {
+    "/getTranslation": "http://localhost:9000/getTranslation"
+  },
 
   /*
    ** Build configuration
