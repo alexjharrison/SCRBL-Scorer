@@ -52,7 +52,8 @@ export default {
     async define(word2) {
       this.definedWord = word2;
       let def = await this.$axios.$get(
-        "https://scriblr.netlify.com/getTranslation?word=" + word2
+        "https://scriblr.netlify.com/.netlify/functions/getTranslation?word=" +
+          word2
       );
       if (!def.results) {
         this.definition = [
