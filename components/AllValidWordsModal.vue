@@ -51,10 +51,7 @@ export default {
   methods: {
     async define(word2) {
       this.definedWord = word2;
-      let def = await this.$axios.$get(
-        "https://wordsapiv1.p.mashape.com/words/" + this.definedWord,
-        { headers: { "X-Mashape-Key": process.env.WORDAPIKEY } }
-      );
+      let def = await this.$axios.$get("/getTranslation?word=" + word2);
       if (!def.results) {
         this.definition = [
           {
